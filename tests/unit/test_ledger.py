@@ -78,6 +78,16 @@ class NeverOverclaimTests(unittest.TestCase):
             led = build_ledger(p, StudentProfile(), TODAY)
             self.assertNotIn(led.status, (O.POTENTIAL_MATCH, O.CLOSED))
 
+    def test_hec_enrollment_duration_remains_unknown_without_evidence(self):
+        led = build_ledger(
+            HEC,
+            StudentProfile(education_level="undergraduate"),
+            TODAY,
+        )
+        s = statuses(led)
+
+        self.assertEqual(s["hec-level"], C.MET)
+        self.assertEqual(s["hec-enrollment-duration"], C.UNKNOWN)
 
 if __name__ == "__main__":
     unittest.main()

@@ -50,8 +50,7 @@ VERIFICATION = frozenset({"verified", "unverified", "conflicting"})
 
 
 def is_number(v) -> bool:
-    return isinstance(v, (int, float)) and not isinstance(v, bool) and not math.isnan(v)
-
+    return isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v)
 
 def validate_condition(field: str, op: str, value) -> None:
     if field not in PROFILE_FIELDS:
@@ -89,6 +88,9 @@ class Rule:
     effective_until: date | None = None
     next_action: str = "Check the official source for the current requirement."
     ambiguity: str | None = None
+    description_ur: str | None = None
+    ambiguity_ur: str | None = None
+    next_action_ur: str | None = None
 
     def __post_init__(self):
         if self.verification not in VERIFICATION:
@@ -123,3 +125,7 @@ class EvaluationResult:
     ambiguity: str | None
     missing_fields: tuple
     next_action: str
+    reason_code: str = ""
+    requirement_ur: str | None = None
+    ambiguity_ur: str | None = None
+    next_action_ur: str | None = None

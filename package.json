@@ -1,0 +1,6 @@
+{
+  "name": "haqsaathi",
+  "private": true,
+  "type": "module",
+  "scripts": { "test:web": "node --test tests/web/logic.test.mjs" }
+}

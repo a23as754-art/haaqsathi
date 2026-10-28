@@ -99,6 +99,14 @@ class ConditionTests(unittest.TestCase):
         r = rule(field="marks_percent", op="gte", value=0)
         self.assertEqual(ev(r, marks_percent=float("nan")).status, C.UNKNOWN)
 
+    def test_positive_infinity_is_unknown(self):
+        r = rule(field="marks_percent", op="gte", value=0)
+        self.assertEqual(ev(r, marks_percent=float("inf")).status, C.UNKNOWN)
+
+    def test_negative_infinity_is_unknown(self):
+        r = rule(field="marks_percent", op="gte", value=0)
+        self.assertEqual(ev(r, marks_percent=float("-inf")).status, C.UNKNOWN)
+
     def test_result_carries_evidence_and_version(self):
         res = ev(rule(version="7"), province="Sindh")
         self.assertEqual((res.rule_id, res.rule_version, res.source_document_id), ("r1", "7", "doc1"))

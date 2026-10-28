@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from datetime import date
 
+from .reasons import CONFLICT_AMBIGUITY, REASONS
 from .models import (ConditionStatus as C, OpportunityStatus as O, EvaluationResult,
                      Rule, StudentProfile, is_number)
 
@@ -18,14 +19,17 @@ def _present(v) -> bool:
     return not (v is None or (isinstance(v, str) and not v.strip()))
 
 
-def _result(rule: Rule, status: C, reason: str, pv, ambiguity=None, missing=()):
+def _result(rule: Rule, status: C, code: str, pv, ambiguity=None, ambiguity_ur=None, missing=()):
     return EvaluationResult(
         rule_id=rule.id, rule_version=rule.version, status=status, requirement=rule.description,
-        profile_value=pv, reason=reason, source_document_id=rule.source_document_id,
+        profile_value=pv, reason=REASONS[code]["en"], source_document_id=rule.source_document_id,
         source_url=rule.source_url, source_passage=rule.source_passage,
         source_published=rule.source_published, source_last_checked=rule.last_checked,
         ambiguity=ambiguity if ambiguity is not None else rule.ambiguity,
-        missing_fields=tuple(missing), next_action=rule.next_action)
+        missing_fields=tuple(missing), next_action=rule.next_action, reason_code=code,
+        requirement_ur=rule.description_ur,
+        ambiguity_ur=ambiguity_ur if ambiguity_ur is not None else rule.ambiguity_ur,
+        next_action_ur=rule.next_action_ur)
 
 
 def _check(profile: StudentProfile, field: str, op: str, rv):
@@ -49,40 +53,36 @@ def _check(profile: StudentProfile, field: str, op: str, rv):
 def evaluate_rule(rule: Rule, profile: StudentProfile, today: date,
                   max_source_age_days: int = DEFAULT_MAX_SOURCE_AGE_DAYS) -> EvaluationResult:
     pv = None if rule.op == "any_of" else getattr(profile, rule.field, None)
-    unk = lambda reason, **kw: _result(rule, C.UNKNOWN, reason, pv, **kw)
+    unk = lambda code, **kw: _result(rule, C.UNKNOWN, code, pv, **kw)
 
     # Source trust gates first: an untrusted rule can never produce met / not_met.
     if rule.verification == "conflicting":
-        return unk("Sources conflict on this requirement.",
-                   ambiguity=rule.ambiguity or "Conflicting information found in sources.")
+        return unk("conflicting", ambiguity=rule.ambiguity or CONFLICT_AMBIGUITY["en"],
+                   ambiguity_ur=rule.ambiguity_ur or (None if rule.ambiguity else CONFLICT_AMBIGUITY["ur"]))
     if rule.verification != "verified":
-        return unk("This requirement has not been verified against an official source.")
+        return unk("unverified")
     if rule.effective_from and today < rule.effective_from:
-        return unk("This requirement version is not yet in effect.")
+        return unk("not_yet_effective")
     if rule.effective_until and today > rule.effective_until:
-        return unk("This requirement version has expired and needs re-checking.")
+        return unk("expired")
     if rule.last_checked is None or (today - rule.last_checked).days > max_source_age_days:
-        return unk("The source has not been re-checked recently enough.")
+        return unk("stale")
 
     # Data gates: missing or invalid profile data is never treated as satisfying a condition.
     if rule.op == "any_of":
         outs = [_check(profile, f, o, v) for f, o, v in rule.value]
         values = {f: pv_ for (f, _, _), (_, _, pv_) in zip(rule.value, outs)}
         if any(s == C.MET for s, _, _ in outs):
-            return _result(rule, C.MET, "At least one alternative requirement is satisfied.", values)
+            return _result(rule, C.MET, "alt_met", values)
         if all(s == C.NOT_MET for s, _, _ in outs):
-            return _result(rule, C.NOT_MET, "None of the alternative requirements is satisfied.", values)
+            return _result(rule, C.NOT_MET, "alt_failed", values)
         missing = tuple(dict.fromkeys(m for _, ms, _ in outs for m in ms))
-        return _result(rule, C.UNKNOWN, "Not enough information to evaluate the alternatives.", values, missing=missing)
+        return _result(rule, C.UNKNOWN, "alt_unknown", values, missing=missing)
 
     status, missing, pv = _check(profile, rule.field, rule.op, rule.value)
     if status == C.UNKNOWN:
-        why = ("Needed information is missing from the profile." if not _present(pv)
-               else "The profile value is not valid for this requirement.")
-        return _result(rule, C.UNKNOWN, why, pv, missing=missing)
-    return _result(rule, status,
-                   "Requirement is satisfied by the profile." if status == C.MET
-                   else "Requirement is not satisfied by the profile.", pv)
+        return _result(rule, C.UNKNOWN, "missing_info" if not _present(pv) else "invalid_value", pv, missing=missing)
+    return _result(rule, status, "satisfied" if status == C.MET else "not_satisfied", pv)
 
 
 def evaluate_all(rules, profile: StudentProfile, today: date,

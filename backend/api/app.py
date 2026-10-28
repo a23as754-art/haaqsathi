@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Callable
 
 from fastapi import FastAPI, HTTPException
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, ConfigDict, Field
 
 from backend.agents.explain import explain_ledger
@@ -16,12 +17,14 @@ from backend.eligibility.checklist import build_action_plan
 from backend.eligibility.ledger import build_ledger
 from backend.eligibility.models import PROFILE_FIELDS
 from backend.models.nebius import ModelError, NebiusClient
+from backend.services.localize import localize_entry
 from backend.services.profile import normalize_profile
 from backend.services.search import search_opportunities
 from backend.services.serialize import to_jsonable
 from backend.services.sources import describe_source
 
 DEFAULT_CATALOG = Path(__file__).resolve().parents[2] / "data" / "fixtures" / "catalog.json"
+WEB_DIR = Path(__file__).resolve().parents[2] / "web"
 DISCLAIMER = ("HaqSaathi is an information and preparation assistant, not an official HEC, PEEF or university "
               "service. Potential eligibility is not an award decision and nothing here guarantees funding.")
 
@@ -45,6 +48,7 @@ class ProfileIn(BaseModel):
 
 class ProfileBody(BaseModel):
     profile: ProfileIn
+    language: str | None = None
 
 
 class MessageBody(BaseModel):
@@ -60,6 +64,7 @@ class NarrativeBody(BaseModel):
 class ChecklistBody(BaseModel):
     profile: ProfileIn
     program_id: str
+    language: str | None = None
 
 
 def _env_client():
@@ -69,6 +74,10 @@ def _env_client():
         return NebiusClient()
     except ModelError:
         return None
+
+
+def _lang(language) -> str:
+    return "ur" if language == "ur" else "en"
 
 
 def create_app(catalog: Catalog | None = None, today_fn: Callable[[], date] = date.today,
@@ -89,12 +98,13 @@ def create_app(catalog: Catalog | None = None, today_fn: Callable[[], date] = da
         except KeyError:
             raise HTTPException(status_code=404, detail="Unknown program.") from None
 
-    def row(r):
+    def row(r, lang="en"):
         return {"program_id": r.program.id, "name": r.program.name, "organization": r.program.organization,
                 "level": r.program.level, "status": r.ledger.status.value, "condition_counts": r.counts,
                 "application": {"confirmed_open": r.program.application_confirmed_open,
                                 "deadline": to_jsonable(r.program.application_deadline),
-                                "note": r.program.application_note}}
+                                "note": (r.program.application_note_ur if lang == "ur" and r.program.application_note_ur
+                                     else r.program.application_note)}}
 
     @app.get("/api/health")
     def health():
@@ -110,14 +120,15 @@ def create_app(catalog: Catalog | None = None, today_fn: Callable[[], date] = da
     def search(body: ProfileBody):
         today = today_fn()
         results = search_opportunities(cat, profile_from(body.profile), today)
-        return {"disclaimer": DISCLAIMER, "results": [row(r) for r in results]}
+        return {"disclaimer": DISCLAIMER, "results": [row(r, _lang(body.language)) for r in results]}
 
     @app.post("/api/matches/{program_id}/explain")
     def explain(program_id: str, body: ProfileBody):
         prog = program_or_404(program_id)
         led = build_ledger(prog, profile_from(body.profile), today_fn())
         return {"disclaimer": DISCLAIMER, "program": {"id": prog.id, "name": prog.name, "organization": prog.organization},
-                "status": led.status.value, "entries": to_jsonable(led.entries)}
+                "status": led.status.value,
+                "entries": [{**to_jsonable(e), "text": localize_entry(e, _lang(body.language))} for e in led.entries]}
 
     @app.post("/api/matches/{program_id}/narrative")
     def narrative(program_id: str, body: NarrativeBody):
@@ -137,14 +148,14 @@ def create_app(catalog: Catalog | None = None, today_fn: Callable[[], date] = da
         except ModelError:
             raise HTTPException(status_code=502, detail="The model request failed. Please try again.") from None
         return {"disclaimer": DISCLAIMER, "language": turn.language, "profile": to_jsonable(turn.profile),
-                "warnings": turn.warnings, "questions": turn.questions, "results": [row(r) for r in turn.results]}
+                "warnings": turn.warnings, "questions": turn.questions, "results": [row(r, turn.language) for r in turn.results]}
 
     @app.post("/api/checklists/generate")
     def checklist(body: ChecklistBody):
         prog = program_or_404(body.program_id)
         led = build_ledger(prog, profile_from(body.profile), today_fn())
         return {"disclaimer": DISCLAIMER, "program_id": prog.id, "status": led.status.value,
-                "items": to_jsonable(build_action_plan(prog, led))}
+                "items": to_jsonable(build_action_plan(prog, led, _lang(body.language)))}
 
     @app.get("/api/sources/{source_id}")
     def source(source_id: str):
@@ -153,6 +164,8 @@ def create_app(catalog: Catalog | None = None, today_fn: Callable[[], date] = da
             raise HTTPException(status_code=404, detail="Unknown source.")
         return describe_source(s, today_fn())
 
+    if WEB_DIR.is_dir():   # registered last so /api/* routes always win
+        app.mount("/", StaticFiles(directory=WEB_DIR, html=True), name="web")
     return app
 
 

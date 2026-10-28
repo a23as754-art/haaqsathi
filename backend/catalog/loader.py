@@ -55,6 +55,9 @@ class Unevaluable:
     passage: str
     next_action: str
     ambiguity: str | None = None
+    description_ur: str | None = None
+    ambiguity_ur: str | None = None
+    next_action_ur: str | None = None
     source_url: str | None = None
     source_published: date | None = None
     source_last_checked: date | None = None
@@ -74,6 +77,7 @@ class Program:
     application_url: str | None
     application_note: str
     closure_evidenced: bool
+    application_note_ur: str | None = None
 
 
 @dataclass(frozen=True)
@@ -126,7 +130,8 @@ def load_catalog(src) -> Catalog:
                     effective_from=_date(r.get("effective_from"), f"rule {r['id']}.effective_from"),
                     effective_until=_date(r.get("effective_until"), f"rule {r['id']}.effective_until"),
                     next_action=r.get("next_action", "Check the official source for the current requirement."),
-                    ambiguity=r.get("ambiguity")))
+                    ambiguity=r.get("ambiguity"), description_ur=r.get("description_ur"),
+                    ambiguity_ur=r.get("ambiguity_ur"), next_action_ur=r.get("next_action_ur")))
             except ValueError as e:
                 if isinstance(e, CatalogError):
                     raise
@@ -140,7 +145,8 @@ def load_catalog(src) -> Catalog:
             seen_rules.add(u["id"])
             us = sources[u["source_id"]]
             unev.append(Unevaluable(u["id"], u["description"], u["source_id"], u["passage"],
-                                    u["next_action"], u.get("ambiguity"), us.url, us.published, us.last_checked))
+                                    u["next_action"], u.get("ambiguity"), u.get("description_ur"), u.get("ambiguity_ur"),
+                                    u.get("next_action_ur"), us.url, us.published, us.last_checked))
         app = p.get("application", {})
         programs.append(Program(
             id=p["id"], name=p["name"], organization=p["organization"], level=p["level"],
@@ -148,5 +154,6 @@ def load_catalog(src) -> Catalog:
             application_confirmed_open=bool(app.get("confirmed_open", False)),
             application_deadline=_date(app.get("deadline"), f"{p['id']}.deadline"),
             application_url=app.get("url"), application_note=app.get("note", ""),
-            closure_evidenced=bool(app.get("closure_evidenced", False))))
+            closure_evidenced=bool(app.get("closure_evidenced", False)),
+            application_note_ur=app.get("note_ur")))
     return Catalog(sources=sources, programs=tuple(programs))

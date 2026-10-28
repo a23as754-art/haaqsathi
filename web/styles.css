@@ -1,0 +1,46 @@
+:root {
+  --bg: #f7f8fa; --surface: #ffffff; --text: #1b2430; --muted: #4a5568; --border: #cbd2dc; --accent: #0b5d4b; --accent-text: #ffffff;
+  --met-bg: #e3f4e8; --met-fg: #0f4a26; --not-bg: #fde7e7; --not-fg: #7a1616; --unk-bg: #fff1cc; --unk-fg: #5a3b00; --focus: #1d4ed8;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #11161d; --surface: #1a212b; --text: #eef2f7; --muted: #b6c0cd; --border: #3a4656; --accent: #46c4a3; --accent-text: #08231c;
+    --met-bg: #12351f; --met-fg: #b8f0cb; --not-bg: #3d1717; --not-fg: #ffc9c9; --unk-bg: #3a2c08; --unk-fg: #ffe29a; --focus: #8ab4ff; }
+}
+* { box-sizing: border-box; }
+html { font-size: 17px; }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: system-ui, "Segoe UI", Roboto, Arial, sans-serif; line-height: 1.55; }
+html[lang="ur"] body { font-family: "Noto Nastaliq Urdu", "Jameel Noori Nastaleeq", "Noto Naskh Arabic", "Segoe UI", Tahoma, sans-serif; line-height: 2; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.wrap { max-width: 46rem; margin: 0 auto; padding: 1rem; }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .75rem 1rem; background: var(--surface); border-bottom: 1px solid var(--border); }
+.top h1 { margin: 0; font-size: 1.4rem; }
+button, select, input, textarea { font: inherit; color: inherit; }
+button { min-height: 2.75rem; padding: .5rem 1rem; border-radius: .6rem; border: 1px solid var(--border); background: var(--surface); cursor: pointer; }
+button.primary { background: var(--accent); color: var(--accent-text); border-color: var(--accent); font-weight: 600; }
+button:disabled { opacity: .6; cursor: progress; }
+.notice { background: var(--surface); border: 1px solid var(--border); border-inline-start: 5px solid var(--accent); border-radius: .6rem; padding: .75rem 1rem; margin: .75rem 0; color: var(--muted); font-size: .92rem; }
+section, details.box { background: var(--surface); border: 1px solid var(--border); border-radius: .8rem; padding: 1rem; margin: 1rem 0; }
+h2 { font-size: 1.2rem; margin: 0 0 .5rem; } h3 { font-size: 1.05rem; margin: .25rem 0; }
+.hint { color: var(--muted); font-size: .92rem; margin: 0 0 .75rem; }
+.field { display: flex; flex-direction: column; gap: .25rem; margin-bottom: .85rem; }
+.field label { font-weight: 600; }
+select, input, textarea { width: 100%; min-height: 2.75rem; padding: .5rem .7rem; border: 1px solid var(--border); border-radius: .5rem; background: var(--bg); }
+textarea { min-height: 6rem; }
+.grid { display: grid; gap: 0 1rem; grid-template-columns: 1fr; }
+@media (min-width: 40rem) { .grid { grid-template-columns: 1fr 1fr; } }
+.card { border: 1px solid var(--border); border-radius: .8rem; padding: 1rem; margin: .75rem 0; background: var(--surface); }
+.card .org { color: var(--muted); margin: 0 0 .5rem; font-size: .92rem; }
+.meta { color: var(--muted); font-size: .9rem; margin: .25rem 0; }
+.badge, .cond { display: inline-flex; align-items: center; gap: .4rem; padding: .15rem .65rem; border-radius: 999px; font-weight: 600; font-size: .9rem; border: 1px solid currentColor; }
+.badge.potential_match, .cond.met { background: var(--met-bg); color: var(--met-fg); }
+.badge.likely_not_eligible, .badge.closed, .cond.not_met { background: var(--not-bg); color: var(--not-fg); }
+.badge.needs_verification, .badge.application_status_unconfirmed, .cond.unknown { background: var(--unk-bg); color: var(--unk-fg); }
+.conds { list-style: none; padding: 0; margin: .5rem 0; }
+.conds > li { border: 1px solid var(--border); border-radius: .6rem; margin: .5rem 0; padding: .5rem .75rem; background: var(--surface); }
+.conds summary { cursor: pointer; display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; min-height: 2.5rem; }
+.passage { border-inline-start: 4px solid var(--border); margin: .5rem 0; padding: .1rem .75rem; color: var(--muted); }
+.label { font-size: .8rem; color: var(--muted); margin: 0; }
+.tag { font-size: .8rem; color: var(--muted); border: 1px dashed var(--border); border-radius: .4rem; padding: 0 .4rem; }
+ol.todo { padding-inline-start: 1.4rem; } ol.todo li { margin: .4rem 0; }
+.err { color: var(--not-fg); background: var(--not-bg); border-radius: .6rem; padding: .5rem .8rem; }
+a { color: var(--accent); } bdi, .ltr { unicode-bidi: isolate; }

@@ -54,7 +54,7 @@ def _template(program, ledger, language: str, reason: str | None) -> Explanation
     if language == "ur":
         summary = (f"{program.name}: {n[C.MET]} شرائط پوری، {n[C.NOT_MET]} پوری نہیں، {n[C.UNKNOWN]} نامعلوم۔ "
                    "یہ صرف ممکنہ اہلیت ہے، وظیفے کا فیصلہ نہیں۔")
-        items = tuple((e.rule_id, f"{e.requirement}: {STATUS_UR[e.status]}") for e in ledger.entries)
+        items = tuple((e.rule_id, f"{e.requirement_ur or e.requirement}: {STATUS_UR[e.status]}") for e in ledger.entries)
     else:
         summary = (f"{program.name}: {n[C.MET]} condition(s) met, {n[C.NOT_MET]} not met, {n[C.UNKNOWN]} unknown. "
                    "This shows potential eligibility only, not an award decision.")

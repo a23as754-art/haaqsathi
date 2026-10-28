@@ -4,31 +4,46 @@
     "hec-nbs-intro": {
       "url": "https://www.hec.gov.pk/english/scholarshipsgrants/Pages/National%20Scholarships/HEC%20Need%20Based%20Scholarships/IntroductionObjectives.aspx",
       "title": "HEC Need Based Scholarships: Introduction and Objectives",
-      "tier": "A", "published": null, "last_checked": "2026-10-20", "retrieval": "fetched",
+      "tier": "A",
+      "published": null,
+      "last_checked": "2026-10-20",
+      "retrieval": "fetched",
       "note": "Page is undated and says 'this year'; the cycle cannot be identified."
     },
     "hec-nbs-eligibility": {
       "url": "https://www.hec.gov.pk/english/scholarshipsgrants/NBS/Pages/Eligibility-Criteria.aspx",
       "title": "HEC Need Based Scholarships: Eligibility Criteria",
-      "tier": "A", "published": null, "last_checked": "2026-10-20", "retrieval": "search_snippet",
+      "tier": "A",
+      "published": null,
+      "last_checked": "2026-10-20",
+      "retrieval": "search_snippet",
       "note": "Read from a search-engine snippet of the official page; undated."
     },
     "hec-nbs-faq": {
       "url": "https://hec.gov.pk/english/scholarshipsgrants/NBS/Pages/Freqently-Asked-Question.aspx",
       "title": "HEC Need Based Scholarships: Frequently Asked Questions",
-      "tier": "A", "published": null, "last_checked": "2026-10-20", "retrieval": "search_snippet",
+      "tier": "A",
+      "published": null,
+      "last_checked": "2026-10-20",
+      "retrieval": "search_snippet",
       "note": "States HEC does not announce start/closing dates; universities do."
     },
     "peef-master-punjab-gov": {
       "url": "https://peef.punjab.gov.pk/masterlevel-scholarships",
       "title": "PEEF Master Level Scholarships",
-      "tier": "A", "published": null, "last_checked": "2026-10-20", "retrieval": "search_snippet",
+      "tier": "A",
+      "published": null,
+      "last_checked": "2026-10-20",
+      "retrieval": "search_snippet",
       "note": "Undated. Lists Punjab domicile, 60% marks or CGPA 2.5, parents' income limit, exclusions."
     },
     "peef-master-org": {
       "url": "https://www.peef.org.pk/masterlevel-scholarships",
       "title": "PEEF Master Level Scholarships (peef.org.pk version)",
-      "tier": "A", "published": null, "last_checked": "2026-10-20", "retrieval": "search_snippet",
+      "tier": "A",
+      "published": null,
+      "last_checked": "2026-10-20",
+      "retrieval": "search_snippet",
       "note": "Older-looking version that refers to academic year 2025-26. Two official domains show different versions of this page."
     }
   },
@@ -40,33 +55,89 @@
       "level": "undergraduate",
       "description": "Tuition plus a monthly stipend for financially needy undergraduates at HEC-selected public sector universities. Applications go through the university, not to HEC directly.",
       "application": {
-        "confirmed_open": false, "deadline": null, "url": null,
-        "note": "HEC does not announce national dates; each participating university announces its own. Application forms are available through the university financial aid office. No current window is confirmed here."
+        "confirmed_open": false,
+        "deadline": null,
+        "url": null,
+        "note": "HEC does not announce national dates; each participating university announces its own. Application forms are available through the university financial aid office. No current window is confirmed here.",
+        "note_ur": "HEC قومی سطح پر تاریخیں اعلان نہیں کرتا؛ ہر شریک یونیورسٹی اپنی تاریخیں خود دیتی ہے۔ درخواست کا فارم یونیورسٹی کے فنانشل ایڈ آفس کے ذریعے ملتا ہے۔ فی الحال کوئی موجودہ مدت تصدیق شدہ نہیں۔"
       },
       "rules": [
-        {"id": "hec-level", "field": "education_level", "op": "eq", "value": "undergraduate", "verification": "verified",
-         "source_id": "hec-nbs-eligibility", "passage": "enrolled in Undergraduate (4-5 years) programs",
-         "description": "Enrolled or admitted in an undergraduate (4-5 year) program",
-         "next_action": "Confirm your program is a 4-5 year undergraduate program."},
-        {"id": "hec-public", "field": "institution_sector", "op": "eq", "value": "public", "verification": "verified",
-         "source_id": "hec-nbs-eligibility", "passage": "HEC-selected public sector Pakistani universities and degree-awarding institutions",
-         "description": "Studying at a public sector university",
-         "ambiguity": "Being public is necessary but not sufficient: only HEC-selected institutions participate.",
-         "next_action": "Check that your university is on the HEC list of participating institutions."},
-        {"id": "hec-not-self-finance", "field": "admission_basis", "op": "ne", "value": "self_finance", "verification": "verified",
-         "source_id": "hec-nbs-eligibility", "passage": "Those students who secure admission on self-finance are not eligible",
-         "description": "Not admitted on a self-finance basis",
-         "next_action": "Check your admission letter for the admission category (merit or self-finance)."}
+      {
+        "id": "hec-level",
+        "field": "education_level",
+        "op": "eq",
+        "value": "undergraduate",
+        "verification": "verified",
+        "source_id": "hec-nbs-eligibility",
+        "passage": "enrolled in Undergraduate (4-5 years) programs",
+        "description": "Education level is undergraduate",
+        "next_action": "Separately confirm admission or enrollment and that the program is 4-5 years long.",
+        "description_ur": "تعلیمی سطح انڈرگریجویٹ ہے",
+        "next_action_ur": "علیحدہ طور پر تصدیق کریں کہ داخلہ ہو چکا ہے یا تعلیم جاری ہے، اور پروگرام 4-5 سال کا ہے۔"
+      },
+        {
+          "id": "hec-public",
+          "field": "institution_sector",
+          "op": "eq",
+          "value": "public",
+          "verification": "verified",
+          "source_id": "hec-nbs-eligibility",
+          "passage": "HEC-selected public sector Pakistani universities and degree-awarding institutions",
+          "description": "Studying at a public sector university",
+          "ambiguity": "Being public is necessary but not sufficient: only HEC-selected institutions participate.",
+          "next_action": "Check that your university is on the HEC list of participating institutions.",
+          "description_ur": "سرکاری شعبے کی یونیورسٹی میں زیرِ تعلیم",
+          "next_action_ur": "دیکھیں کہ آپ کی یونیورسٹی HEC کی شریک جامعات کی فہرست میں شامل ہے۔",
+          "ambiguity_ur": "سرکاری ہونا ضروری ہے مگر کافی نہیں: صرف HEC کی منتخب کردہ جامعات اس میں شامل ہیں۔"
+        },
+        {
+          "id": "hec-not-self-finance",
+          "field": "admission_basis",
+          "op": "ne",
+          "value": "self_finance",
+          "verification": "verified",
+          "source_id": "hec-nbs-eligibility",
+          "passage": "Those students who secure admission on self-finance are not eligible",
+          "description": "Not admitted on a self-finance basis",
+          "next_action": "Check your admission letter for the admission category (merit or self-finance).",
+          "description_ur": "داخلہ سیلف فنانس کی بنیاد پر نہ ہوا ہو",
+          "next_action_ur": "اپنے داخلہ لیٹر میں داخلے کی قسم (میرٹ یا سیلف فنانس) دیکھیں۔"
+        }
       ],
       "unevaluable": [
-        {"id": "hec-need-assessed", "description": "Financial need, as assessed by your university's scholarship committee",
-         "source_id": "hec-nbs-eligibility", "passage": "assessed by the Institutional Scholarship Award Committee",
-         "ambiguity": "HEC pages show no national income limit. Some university notices publish their own caps; those are university rules, not HEC rules.",
-         "next_action": "Ask your university financial aid office which income documents and limit it applies this year."},
-        {"id": "hec-participating", "description": "Your university is an HEC-selected participating institution",
-         "source_id": "hec-nbs-intro", "passage": "61 public sector universities",
-         "ambiguity": "The introduction page is undated, so the current participating list is not confirmed.",
-         "next_action": "Check the HEC list of eligible institutions or ask your financial aid office."}
+        {
+          "id": "hec-need-assessed",
+          "description": "Financial need, as assessed by your university's scholarship committee",
+          "source_id": "hec-nbs-eligibility",
+          "passage": "assessed by the Institutional Scholarship Award Committee",
+          "ambiguity": "HEC pages show no national income limit. Some university notices publish their own caps; those are university rules, not HEC rules.",
+          "next_action": "Ask your university financial aid office which income documents and limit it applies this year.",
+          "description_ur": "مالی ضرورت، جیسا کہ آپ کی یونیورسٹی کی اسکالرشپ کمیٹی جانچتی ہے",
+          "next_action_ur": "اپنی یونیورسٹی کے فنانشل ایڈ آفس سے پوچھیں کہ اس سال آمدنی کے کون سے کاغذات اور کون سی حد لاگو ہے۔",
+          "ambiguity_ur": "HEC کے صفحات میں آمدنی کی کوئی قومی حد نظر نہیں آئی۔ کچھ جامعات اپنے نوٹسز میں اپنی حد دیتی ہیں؛ وہ یونیورسٹی کے اصول ہیں، HEC کے نہیں۔"
+        },
+        {
+          "id": "hec-participating",
+          "description": "Your university is an HEC-selected participating institution",
+          "source_id": "hec-nbs-intro",
+          "passage": "61 public sector universities",
+          "ambiguity": "The introduction page is undated, so the current participating list is not confirmed.",
+          "next_action": "Check the HEC list of eligible institutions or ask your financial aid office.",
+          "description_ur": "آپ کی یونیورسٹی HEC کی منتخب شریک جامعات میں شامل ہے",
+          "next_action_ur": "HEC کی اہل جامعات کی فہرست دیکھیں یا اپنے فنانشل ایڈ آفس سے پوچھیں۔",
+          "ambiguity_ur": "تعارفی صفحے پر تاریخ درج نہیں، اس لیے موجودہ فہرست کی تصدیق نہیں ہوئی۔"
+        },
+        {
+          "id": "hec-enrollment-duration",
+          "description": "Applicant is admitted to or enrolled in an undergraduate program lasting 4-5 years",
+          "source_id": "hec-nbs-eligibility",
+          "passage": "enrolled in Undergraduate (4-5 years) programs",
+          "ambiguity": "The current profile does not capture admission or enrollment status or program duration, so this condition cannot yet be evaluated.",
+          "next_action": "Confirm your admission or enrollment status and the official duration of your degree with your university.",
+          "description_ur": "درخواست گزار کو 4-5 سالہ انڈرگریجویٹ پروگرام میں داخلہ مل چکا ہے یا وہ اس میں زیرِ تعلیم ہے",
+          "ambiguity_ur": "موجودہ پروفائل میں داخلے یا زیرِ تعلیم ہونے کی حیثیت اور پروگرام کی مدت درج نہیں، اس لیے اس شرط کی جانچ نہیں ہو سکتی۔",
+          "next_action_ur": "اپنی یونیورسٹی سے داخلے یا زیرِ تعلیم ہونے کی حیثیت اور ڈگری کی سرکاری مدت کی تصدیق کریں۔"
+        }
       ]
     },
     {
@@ -76,43 +147,117 @@
       "level": "masters",
       "description": "PEEF scholarship quota for master's students at partner universities. Applications are submitted to the university, not directly to PEEF.",
       "application": {
-        "confirmed_open": false, "deadline": null, "url": null,
-        "note": "PEEF pages reviewed are undated and one refers to the 2025-26 cycle. No current window is confirmed here."
+        "confirmed_open": false,
+        "deadline": null,
+        "url": null,
+        "note": "PEEF pages reviewed are undated and one refers to the 2025-26 cycle. No current window is confirmed here.",
+        "note_ur": "PEEF کے جائزہ شدہ صفحات پر تاریخ درج نہیں اور ایک صفحہ 2025-26 کے سائیکل کا ذکر کرتا ہے۔ فی الحال کوئی موجودہ مدت تصدیق شدہ نہیں۔"
       },
       "rules": [
-        {"id": "peef-level", "field": "education_level", "op": "eq", "value": "masters", "verification": "verified",
-         "source_id": "peef-master-punjab-gov", "passage": "Master Level Scholarships",
-         "description": "Master's level student",
-         "next_action": "PEEF has separate programs for other levels; check those if you are not at master's level."},
-        {"id": "peef-domicile", "field": "domicile_province", "op": "eq", "value": "Punjab", "verification": "verified",
-         "source_id": "peef-master-punjab-gov", "passage": "Punjab domicile",
-         "description": "Holds Punjab domicile",
-         "ambiguity": "Other PEEF programs mention special quotas for other regions; this rule covers the master's program page only.",
-         "next_action": "Check your domicile certificate."},
-        {"id": "peef-marks", "field": "*", "op": "any_of", "value": [["marks_percent", "gte", 60], ["cgpa", "gte", 2.5]],
-         "verification": "verified", "source_id": "peef-master-punjab-gov",
-         "passage": "at least 60% marks or a minimum CGPA 2.5",
-         "description": "At least 60% marks or CGPA 2.5 in the bachelor's examination",
-         "ambiguity": "The page says the qualifying exam must be from the last three years in Punjab; this is not checked here.",
-         "next_action": "Check your bachelor's result and the exam year and location against the PEEF page."},
-        {"id": "peef-income", "field": "monthly_family_income_pkr", "op": "lte", "value": 40000, "verification": "unverified",
-         "source_id": "peef-master-punjab-gov", "passage": "equal to or less than PKR. 40,000/-",
-         "description": "Parents' declared monthly income from all sources within the PEEF limit",
-         "ambiguity": "The official page shows PKR 40,000 with exemptions (children of BPS 1-4 government employees, children of civilians martyred in terrorist attacks), but it is undated and other sites quote different limits.",
-         "next_action": "Confirm the income limit and your exemption status in the current PEEF notice before relying on this."},
-        {"id": "peef-no-other-scholarship", "field": "receives_other_scholarship", "op": "eq", "value": false, "verification": "verified",
-         "source_id": "peef-master-punjab-gov", "passage": "Not availing any other educational scholarship",
-         "description": "Not receiving another educational scholarship this academic year",
-         "next_action": "List any scholarship or fee support you currently receive."}
+        {
+          "id": "peef-level",
+          "field": "education_level",
+          "op": "eq",
+          "value": "masters",
+          "verification": "verified",
+          "source_id": "peef-master-punjab-gov",
+          "passage": "Master Level Scholarships",
+          "description": "Master's level student",
+          "next_action": "PEEF has separate programs for other levels; check those if you are not at master's level.",
+          "description_ur": "ماسٹرز سطح کا طالب علم",
+          "next_action_ur": "PEEF کے دوسری سطحوں کے لیے الگ پروگرام ہیں؛ اگر آپ ماسٹرز میں نہیں تو وہ دیکھیں۔"
+        },
+        {
+          "id": "peef-domicile",
+          "field": "domicile_province",
+          "op": "eq",
+          "value": "Punjab",
+          "verification": "verified",
+          "source_id": "peef-master-punjab-gov",
+          "passage": "Punjab domicile",
+          "description": "Holds Punjab domicile",
+          "ambiguity": "Other PEEF programs mention special quotas for other regions; this rule covers the master's program page only.",
+          "next_action": "Check your domicile certificate.",
+          "description_ur": "پنجاب کا ڈومیسائل ہونا",
+          "next_action_ur": "اپنا ڈومیسائل سرٹیفکیٹ دیکھیں۔",
+          "ambiguity_ur": "PEEF کے دوسرے پروگراموں میں دیگر علاقوں کے خصوصی کوٹے کا ذکر ہے؛ یہ شرط صرف ماسٹرز پروگرام کے صفحے پر مبنی ہے۔"
+        },
+        {
+          "id": "peef-marks",
+          "field": "*",
+          "op": "any_of",
+          "value": [
+            [
+              "marks_percent",
+              "gte",
+              60
+            ],
+            [
+              "cgpa",
+              "gte",
+              2.5
+            ]
+          ],
+          "verification": "verified",
+          "source_id": "peef-master-punjab-gov",
+          "passage": "at least 60% marks or a minimum CGPA 2.5",
+          "description": "At least 60% marks or CGPA 2.5 in the bachelor's examination",
+          "ambiguity": "The page says the qualifying exam must be from the last three years in Punjab; this is not checked here.",
+          "next_action": "Check your bachelor's result and the exam year and location against the PEEF page.",
+          "description_ur": "بیچلر کے امتحان میں کم از کم 60 فیصد نمبر یا 2.5 سی جی پی اے",
+          "next_action_ur": "اپنے بیچلر کے نتیجے، امتحان کے سال اور مقام کو PEEF کے صفحے سے ملا کر دیکھیں۔",
+          "ambiguity_ur": "صفحے کے مطابق اہل امتحان پچھلے تین سال کے اندر پنجاب میں ہوا ہو؛ یہ یہاں نہیں جانچا جاتا۔"
+        },
+        {
+          "id": "peef-income",
+          "field": "monthly_family_income_pkr",
+          "op": "lte",
+          "value": 40000,
+          "verification": "unverified",
+          "source_id": "peef-master-punjab-gov",
+          "passage": "equal to or less than PKR. 40,000/-",
+          "description": "Parents' declared monthly income from all sources within the PEEF limit",
+          "ambiguity": "The official page shows PKR 40,000 with exemptions (children of BPS 1-4 government employees, children of civilians martyred in terrorist attacks), but it is undated and other sites quote different limits.",
+          "next_action": "Confirm the income limit and your exemption status in the current PEEF notice before relying on this.",
+          "description_ur": "والدین کی تمام ذرائع سے ماہانہ آمدنی PEEF کی حد کے اندر ہو",
+          "next_action_ur": "اس پر بھروسا کرنے سے پہلے موجودہ PEEF نوٹس میں آمدنی کی حد اور اپنا استثنا چیک کریں۔",
+          "ambiguity_ur": "سرکاری صفحے پر 40,000 روپے کی حد اور کچھ استثنا (بی پی ایس 1 تا 4 کے سرکاری ملازمین کے بچے، دہشت گردی میں شہید ہونے والے شہریوں کے بچے) درج ہیں، مگر صفحے پر تاریخ نہیں اور دوسری سائٹس مختلف حدیں بتاتی ہیں۔"
+        },
+        {
+          "id": "peef-no-other-scholarship",
+          "field": "receives_other_scholarship",
+          "op": "eq",
+          "value": false,
+          "verification": "verified",
+          "source_id": "peef-master-punjab-gov",
+          "passage": "Not availing any other educational scholarship",
+          "description": "Not receiving another educational scholarship this academic year",
+          "next_action": "List any scholarship or fee support you currently receive.",
+          "description_ur": "اس تعلیمی سال میں کوئی اور تعلیمی وظیفہ نہ لے رہا ہو",
+          "next_action_ur": "اپنے موجودہ وظائف یا فیس کی معاونت کی فہرست بنائیں۔"
+        }
       ],
       "unevaluable": [
-        {"id": "peef-partner-admission", "description": "Full-time admission this academic year at a PEEF partner university",
-         "source_id": "peef-master-org", "passage": "Secured admission as a full-time student",
-         "ambiguity": "The page refers to academic year 2025-26; the current cycle and partner list are not confirmed.",
-         "next_action": "Ask your university financial aid office whether it is a PEEF partner and for its application deadline."},
-        {"id": "peef-exclusions", "description": "Not in an excluded group (for example marks improvers or supplementary-exam candidates)",
-         "source_id": "peef-master-punjab-gov", "passage": "Marks improvers or students who have passed examination in supplementary session",
-         "next_action": "Check the exclusion list on the PEEF page against your own record."}
+        {
+          "id": "peef-partner-admission",
+          "description": "Full-time admission this academic year at a PEEF partner university",
+          "source_id": "peef-master-org",
+          "passage": "Secured admission as a full-time student",
+          "ambiguity": "The page refers to academic year 2025-26; the current cycle and partner list are not confirmed.",
+          "next_action": "Ask your university financial aid office whether it is a PEEF partner and for its application deadline.",
+          "description_ur": "اس تعلیمی سال PEEF کی شریک یونیورسٹی میں کل وقتی داخلہ",
+          "next_action_ur": "اپنی یونیورسٹی کے فنانشل ایڈ آفس سے پوچھیں کہ کیا وہ PEEF کی شریک ہے اور درخواست کی آخری تاریخ کیا ہے۔",
+          "ambiguity_ur": "صفحے پر تعلیمی سال 2025-26 کا ذکر ہے؛ موجودہ سائیکل اور شریک جامعات کی فہرست کی تصدیق نہیں۔"
+        },
+        {
+          "id": "peef-exclusions",
+          "description": "Not in an excluded group (for example marks improvers or supplementary-exam candidates)",
+          "source_id": "peef-master-punjab-gov",
+          "passage": "Marks improvers or students who have passed examination in supplementary session",
+          "next_action": "Check the exclusion list on the PEEF page against your own record.",
+          "description_ur": "خارج کردہ گروہوں میں شامل نہ ہو (مثلاً مارکس امپروومنٹ یا سپلیمنٹری امتحان دینے والے)",
+          "next_action_ur": "PEEF کے صفحے پر خارج کردہ فہرست کو اپنے ریکارڈ سے ملا کر دیکھیں۔"
+        }
       ]
     }
   ]
