@@ -16,7 +16,7 @@ function h(tag, attrs = {}, ...kids) {
     else if (k.startsWith("on")) el.addEventListener(k.slice(2), v);
     else el.setAttribute(k, v === true ? "" : v);
   }
-  for (const kid of kids.flat()) {
+  for (const kid of kids.flat(Infinity)) {{
     if (kid == null || kid === false) continue;
     el.append(kid.nodeType ? kid : document.createTextNode(String(kid)));
   }
@@ -199,7 +199,7 @@ function resultsContent() {
 function paintResults(focus = false) {
   const box = document.getElementById("results");
   if (!box) return;
-  box.replaceChildren(...resultsContent());
+  box.replaceChildren(...resultsContent().flat(Infinity));
   if (focus) box.focus();
 }
 
